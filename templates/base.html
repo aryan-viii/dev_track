@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}DevTrack{% endblock title %}</title>
 
-    <link rel="stylesheet" href="{% static "static/style.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
 <body>
 
@@ -23,25 +23,25 @@
                 Home
             </a>
 
-            {% comment %} <a href="{% url 'projects' %}">
+            <a href="#">
                 Projects
             </a>
 
-            <a href="{% url 'dashboard' %}">
+            <a href="#">
                 Dashboard
-            </a> {% endcomment %}
+            </a>
 
         </div>
 
         <div class="nav-right">
 
-            {% comment %} <a href="{% url 'login' %}">
+            <a href="#">
                 Login
             </a>
 
-            <a href="{% url 'register' %}">
+            <a href="#">
                 Register
-            </a> {% endcomment %}
+            </a>
 
         </div>
 
