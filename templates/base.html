@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DevTrack{% endblock title %}</title>
+
+    <link rel="stylesheet" href="{% static "static/style.css" %}">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+
+        <div class="nav-left">
+
+            <a href="{% url 'home' %}" class="logo">
+                DevTrack
+            </a>
+
+            <a href="{% url 'home' %}">
+                Home
+            </a>
+
+            {% comment %} <a href="{% url 'projects' %}">
+                Projects
+            </a>
+
+            <a href="{% url 'dashboard' %}">
+                Dashboard
+            </a> {% endcomment %}
+
+        </div>
+
+        <div class="nav-right">
+
+            {% comment %} <a href="{% url 'login' %}">
+                Login
+            </a>
+
+            <a href="{% url 'register' %}">
+                Register
+            </a> {% endcomment %}
+
+        </div>
+
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="messages">
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    </div>
+
+    <!-- Main Content -->
+    <main>
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+
+        <p>
+            © 2026 DevTrack. All rights reserved.
+        </p>
+
+    </footer>
+
+</body>
+</html>
