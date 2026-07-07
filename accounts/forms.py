@@ -13,3 +13,14 @@ class RegisterForm(UserCreationForm):
             "password1",
             "password2",
         )
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            "profile_picture",
+            "bio",
+            "github_url",
+            "linkedin_url",
+        )

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Profile
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ request.user.username }}</h1>
+
+    {% if request.user.profile_picture %}
+        <img src="{{ request.user.profile_picture.url }}"
+        width="150"
+        alt="Profile Picture"
+    {% endif %}
+
+    <p>{{ request.user.bio }}</p>
+
+    <p>
+        <a href="{{ request.user.github_url }}">
+            GitHub
+        </a>
+    </p>
+
+    <p>
+        <a href="{{ request.user.linkedin_url }}">
+            LinkedIn
+        </a>
+    </p>
+
+    <a href="{% url "edit_profile" %}">
+        Edit Profile
+    </a>
+    
+{% endblock content %}
