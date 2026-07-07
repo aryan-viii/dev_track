@@ -3,7 +3,33 @@ from django.contrib.auth.admin import UserAdmin
 
 from .models import User
 
-# Register your models here.
 
+@admin.register(User)
+class CustomUserAdmin(UserAdmin):
+    fieldsets = UserAdmin.fieldsets + (
+        (
+            "Profile Information",
+            {
+                "fields": (
+                    "profile_picture",
+                    "bio",
+                    "github_url",
+                    "linkedin_url",
+                ),
+            },
+        ),
+    )
 
-admin.site.register(User, UserAdmin)
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        (
+            "Profile Information",
+            {
+                "fields": (
+                    "profile_picture",
+                    "bio",
+                    "github_url",
+                    "linkedin_url",
+                ),
+            },
+        ),
+    )
