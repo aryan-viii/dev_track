@@ -1,34 +1,30 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Profile
-{% endblock title %}
+Profile
+{% endblock %}
 
 {% block content %}
-    <h1>{{ request.user.username }}</h1>
 
-    {% if request.user.profile_picture %}
-        <img src="{{ request.user.profile_picture.url }}"
-        width="150"
-        alt="Profile Picture"
-    {% endif %}
+<h1>My Profile</h1>
 
-    <p>{{ request.user.bio }}</p>
+<p><strong>Username:</strong> {{ request.user.username }}</p>
 
-    <p>
-        <a href="{{ request.user.github_url }}">
-            GitHub
-        </a>
-    </p>
+<p><strong>Email:</strong> {{ request.user.email }}</p>
 
-    <p>
-        <a href="{{ request.user.linkedin_url }}">
-            LinkedIn
-        </a>
-    </p>
+<p><strong>Bio:</strong> {{ request.user.bio }}</p>
 
-    <a href="{% url "edit_profile" %}">
-        Edit Profile
-    </a>
-    
-{% endblock content %}
+<p><strong>GitHub:</strong> {{ request.user.github_url }}</p>
+
+<p><strong>LinkedIn:</strong> {{ request.user.linkedin_url }}</p>
+
+{% if request.user.profile_picture %}
+    <img
+        src="{{ request.user.profile_picture.url }}"
+        width="200"
+    >
+{% else %}
+    <p>No profile picture uploaded.</p>
+{% endif %}
+
+{% endblock %}
