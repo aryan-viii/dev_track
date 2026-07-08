@@ -6,18 +6,96 @@ Create Workspace
 
 {% block content %}
 
-<h1>Create Workspace</h1>
+<div class="row justify-content-center">
 
-<form method="POST" enctype="multipart/form-data">
+    <div class="col-lg-8">
 
-    {% csrf_token %}
+        <div class="card shadow">
 
-    {{ form.as_p }}
+            <div class="card-header">
 
-    <button type="submit">
-        Create Workspace
-    </button>
+                <h3 class="mb-0">
+                    <i class="bi bi-folder-plus"></i>
+                    Create Workspace
+                </h3>
 
-</form>
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            {{ form.name.label }}
+                        </label>
+
+                        {{ form.name }}
+
+                        <div class="text-danger">
+                            {{ form.name.errors }}
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            {{ form.description.label }}
+                        </label>
+
+                        {{ form.description }}
+
+                        <div class="text-danger">
+                            {{ form.description.errors }}
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            {{ form.logo.label }}
+                        </label>
+
+                        {{ form.logo }}
+
+                        <div class="form-text">
+                            {{ form.logo.help_text }}
+                        </div>
+
+                        <div class="text-danger">
+                            {{ form.logo.errors }}
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        <i class="bi bi-check-circle"></i>
+                        Create Workspace
+                    </button>
+
+                    <a
+                        href="{% url 'workspace_list' %}"
+                        class="btn btn-secondary"
+                    >
+                        Cancel
+                    </a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}
