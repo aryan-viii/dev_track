@@ -20,4 +20,16 @@ urlpatterns = [
         views.workspace_detail,
         name="workspace_detail",
     ),
+
+    path(
+        "workspaces/<int:pk>/edit/",
+        views.workspace_update,
+        name="workspace_update",
+    ),
+
+    path(
+        "workspaces/<int:pk>/delete/",
+        views.workspace_delete,
+        name="workspace_delete",
+    ),
 ]

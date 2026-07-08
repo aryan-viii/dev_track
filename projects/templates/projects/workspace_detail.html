@@ -8,6 +8,32 @@
 
 <h1>{{ workspace.name }}</h1>
 
+{% if request.user == workspace.owner %}
+
+<a
+    href="{% url 'workspace_update' workspace.pk %}"
+    class="btn btn-warning"
+>
+
+    <i class="bi bi-pencil-square"></i>
+
+    Edit Workspace
+
+</a>
+
+<a
+    href="{% url 'workspace_delete' workspace.pk %}"
+    class="btn btn-danger"
+>
+
+    <i class="bi bi-trash"></i>
+
+    Delete Workspace
+
+</a>
+
+{% endif %}
+
 {% if workspace.logo %}
     <img src="{{ workspace.logo.url }}" width="150">
 {% endif %}

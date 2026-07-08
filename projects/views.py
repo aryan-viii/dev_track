@@ -92,3 +92,106 @@ def workspace_create(request):
         "projects/workspace_form.html",
         context,
     )
+
+
+@login_required
+def workspace_update(request, pk):
+
+    workspace = get_object_or_404(
+        Workspace,
+        pk=pk,
+    )
+
+    # Only owner can edit
+    if workspace.owner != request.user:
+
+        messages.error(
+            request,
+            "You don't have permission to edit this workspace.",
+        )
+
+        return redirect(
+            "workspace_detail",
+            pk=workspace.pk,
+        )
+
+    if request.method == "POST":
+
+        form = WorkspaceForm(
+            request.POST,
+            request.FILES,
+            instance=workspace,
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            messages.success(
+                request,
+                "Workspace updated successfully!",
+            )
+
+            return redirect(
+                "workspace_detail",
+                pk=workspace.pk,
+            )
+
+    else:
+
+        form = WorkspaceForm(
+            instance=workspace,
+        )
+
+    context = {
+        "form": form,
+        "workspace": workspace,
+    }
+
+    return render(
+        request,
+        "projects/workspace_form.html",
+        context,
+    )
+
+
+@login_required
+def workspace_delete(request, pk):
+
+    workspace = get_object_or_404(
+        Workspace,
+        pk=pk,
+    )
+
+    if workspace.owner != request.user:
+
+        messages.error(
+            request,
+            "You don't have permission to delete this workspace.",
+        )
+
+        return redirect(
+            "workspace_detail",
+            pk=workspace.pk,
+        )
+
+    if request.method == "POST":
+
+        workspace.delete()
+
+        messages.success(
+            request,
+            "Workspace deleted successfully!",
+        )
+
+        return redirect("workspace_list")
+
+    context = {
+        "workspace": workspace,
+    }
+
+    return render(
+        request,
+        "projects/workspace_confirm_delete.html",
+        context,
+    )

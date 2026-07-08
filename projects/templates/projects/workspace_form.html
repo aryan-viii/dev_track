@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
-Create Workspace
+    {% if workspace %}
+        Edit Workspace
+    {% else %}
+        Create Workspace
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -16,7 +20,11 @@ Create Workspace
 
                 <h3 class="mb-0">
                     <i class="bi bi-folder-plus"></i>
-                    Create Workspace
+                    {% if workspace %}
+                        Edit Workspace
+                    {% else %}
+                        Create Workspace
+                    {% endif %}
                 </h3>
 
             </div>
@@ -78,7 +86,11 @@ Create Workspace
                         class="btn btn-primary"
                     >
                         <i class="bi bi-check-circle"></i>
-                        Create Workspace
+                        {% if workspace %}
+                            Update Workspace
+                        {% else %}
+                            Create Workspace
+                        {% endif %}
                     </button>
 
                     <a
