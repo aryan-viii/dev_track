@@ -1,10 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
-from .forms import *
+from .forms import CustomUserRegistrationForm, CustomAuthenticationForm
 
 def register_view(request):
     if request.user.is_authenticated:

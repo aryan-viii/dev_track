@@ -6,25 +6,156 @@ Profile
 
 {% block content %}
 
-<h1>My Profile</h1>
+<div class="row">
 
-<p><strong>Username:</strong> {{ request.user.username }}</p>
+    <div class="col-md-4">
 
-<p><strong>Email:</strong> {{ request.user.email }}</p>
+        <div class="card shadow">
 
-<p><strong>Bio:</strong> {{ request.user.bio }}</p>
+            <div class="card-body text-center">
 
-<p><strong>GitHub:</strong> {{ request.user.github_url }}</p>
+                {% if user.profile_picture %}
 
-<p><strong>LinkedIn:</strong> {{ request.user.linkedin_url }}</p>
+                    <img
+                        src="{{ user.profile_picture.url }}"
+                        class="rounded-circle img-fluid mb-3"
+                        width="180"
+                    >
 
-{% if request.user.profile_picture %}
-    <img
-        src="{{ request.user.profile_picture.url }}"
-        width="200"
-    >
-{% else %}
-    <p>No profile picture uploaded.</p>
-{% endif %}
+                {% else %}
+
+                    <i
+                        class="bi bi-person-circle"
+                        style="font-size: 8rem;"
+                    ></i>
+
+                {% endif %}
+
+                <h3>
+
+                    {{ user.get_full_name }}
+
+                </h3>
+
+                <p class="text-muted">
+
+                    @{{ user.username }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-8">
+
+        <div class="card shadow">
+
+            <div class="card-header">
+
+                <h4>
+
+                    Profile Information
+
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <table class="table">
+
+                    <tr>
+
+                        <th>Email</th>
+
+                        <td>{{ user.email }}</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Bio</th>
+
+                        <td>{{ user.bio }}</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>GitHub</th>
+
+                        <td>
+
+                            {% if user.github_url %}
+
+                                <a
+                                    href="{{ user.github_url }}"
+                                    target="_blank"
+                                >
+
+                                    {{ user.github_url }}
+
+                                </a>
+
+                            {% else %}
+
+                                —
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>LinkedIn</th>
+
+                        <td>
+
+                            {% if user.linkedin_url %}
+
+                                <a
+                                    href="{{ user.linkedin_url }}"
+                                    target="_blank"
+                                >
+
+                                    {{ user.linkedin_url }}
+
+                                </a>
+
+                            {% else %}
+
+                                —
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                </table>
+
+                <a
+                    href="#"
+                    class="btn btn-primary"
+                >
+
+                    <i class="bi bi-pencil-square"></i>
+
+                    Edit Profile
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}
