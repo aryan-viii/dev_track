@@ -34,6 +34,17 @@
 
 {% endif %}
 
+<a
+    href="{% url 'project_list' workspace.pk %}"
+    class="btn btn-primary"
+>
+
+    <i class="bi bi-kanban"></i>
+
+    View Projects
+
+</a>
+
 {% if workspace.logo %}
     <img src="{{ workspace.logo.url }}" width="150">
 {% endif %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ project.name }}
+{% endblock %}
+
+{% block content %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{% url 'workspace_detail' workspace.pk %}">{{ workspace.name }}</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'project_list' workspace.pk %}">Projects</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            {{ project.name }}
+        </li>
+    </ol>
+</nav>
+
+<div class="d-flex justify-content-between align-items-start mb-3">
+
+    <h1>{{ project.name }}</h1>
+
+    <div>
+
+        <a
+            href="{% url 'task_list' workspace.pk project.pk %}"
+            class="btn btn-primary"
+        >
+            <i class="bi bi-list-task"></i>
+            View Tasks
+        </a>
+
+    {% if request.user == workspace.owner %}
+
+        <a
+            href="{% url 'project_update' workspace.pk project.pk %}"
+            class="btn btn-warning"
+        >
+            <i class="bi bi-pencil-square"></i>
+            Edit Project
+        </a>
+
+        <a
+            href="{% url 'project_delete' workspace.pk project.pk %}"
+            class="btn btn-danger"
+        >
+            <i class="bi bi-trash"></i>
+            Delete Project
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-body">
+
+        <p>
+            <strong>Description:</strong>
+            {{ project.description|default:"No description provided." }}
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            {% if project.status == "planning" %}
+                <span class="badge bg-secondary">Planning</span>
+            {% elif project.status == "active" %}
+                <span class="badge bg-primary">Active</span>
+            {% elif project.status == "completed" %}
+                <span class="badge bg-success">Completed</span>
+            {% elif project.status == "archived" %}
+                <span class="badge bg-dark">Archived</span>
+            {% endif %}
+        </p>
+
+        <p>
+            <strong>Start Date:</strong>
+            {{ project.start_date|default:"Not set" }}
+        </p>
+
+        <p>
+            <strong>Due Date:</strong>
+            {{ project.due_date|default:"Not set" }}
+        </p>
+
+        <p>
+            <strong>Created:</strong>
+            {{ project.created_at }}
+        </p>
+
+        <p class="mb-0">
+            <strong>Updated:</strong>
+            {{ project.updated_at }}
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

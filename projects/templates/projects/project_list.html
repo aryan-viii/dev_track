@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}
+Projects - {{ workspace.name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h1 class="mb-0">{{ workspace.name }}</h1>
+        <p class="text-muted mb-0">Projects</p>
+    </div>
+
+    <div>
+
+        <a
+            href="{% url 'workspace_detail' workspace.pk %}"
+            class="btn btn-secondary"
+        >
+            <i class="bi bi-arrow-left"></i>
+            Back to Workspace
+        </a>
+
+        <a
+            href="{% url 'project_create' workspace.pk %}"
+            class="btn btn-primary"
+        >
+            <i class="bi bi-plus-circle"></i>
+            New Project
+        </a>
+
+    </div>
+
+</div>
+
+<form method="GET" class="row g-2 mb-4">
+
+    <div class="col-md-10">
+        <input
+            type="text"
+            name="q"
+            class="form-control"
+            placeholder="Search projects by name..."
+            value="{{ search_query }}"
+        >
+    </div>
+
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-outline-primary w-100">
+            <i class="bi bi-search"></i>
+            Search
+        </button>
+    </div>
+
+</form>
+
+{% if projects %}
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+    {% for project in projects %}
+
+    <div class="col">
+
+        <div class="card h-100 shadow-sm">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-start mb-2">
+
+                    <h5 class="card-title mb-0">
+                        {{ project.name }}
+                    </h5>
+
+                    {% if project.status == "planning" %}
+                        <span class="badge bg-secondary">Planning</span>
+                    {% elif project.status == "active" %}
+                        <span class="badge bg-primary">Active</span>
+                    {% elif project.status == "completed" %}
+                        <span class="badge bg-success">Completed</span>
+                    {% elif project.status == "archived" %}
+                        <span class="badge bg-dark">Archived</span>
+                    {% endif %}
+
+                </div>
+
+                <p class="card-text text-muted">
+                    {{ project.description|default:"No description provided."|truncatewords:20 }}
+                </p>
+
+                {% if project.due_date %}
+                <p class="card-text">
+                    <small class="text-muted">
+                        <i class="bi bi-calendar-event"></i>
+                        Due {{ project.due_date }}
+                    </small>
+                </p>
+                {% endif %}
+
+            </div>
+
+            <div class="card-footer bg-transparent">
+
+                <a
+                    href="{% url 'project_detail' workspace.pk project.pk %}"
+                    class="btn btn-sm btn-outline-primary"
+                >
+                    <i class="bi bi-eye"></i>
+                    View
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% if page_obj.paginator.num_pages > 1 %}
+
+<nav aria-label="Project pagination" class="mt-4">
+
+    <ul class="pagination justify-content-center">
+
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">
+                Previous
+            </a>
+        </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+            <a class="page-link" href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}">
+                {{ num }}
+            </a>
+        </li>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">
+                Next
+            </a>
+        </li>
+        {% endif %}
+
+    </ul>
+
+</nav>
+
+{% endif %}
+
+{% else %}
+
+<div class="alert alert-info">
+    {% if search_query %}
+        No projects found matching "{{ search_query }}".
+    {% else %}
+        No projects yet in this workspace.
+        <a href="{% url 'project_create' workspace.pk %}">Create the first one</a>.
+    {% endif %}
+</div>
+
+{% endif %}
+
+{% endblock %}

@@ -32,4 +32,34 @@ urlpatterns = [
         views.workspace_delete,
         name="workspace_delete",
     ),
+
+    path(
+        "workspaces/<int:workspace_pk>/projects/",
+        views.project_list,
+        name="project_list",
+    ),
+
+    path(
+        "workspaces/<int:workspace_pk>/projects/create/",
+        views.project_create,
+        name="project_create",
+    ),
+
+    path(
+        "workspaces/<int:workspace_pk>/projects/<int:pk>/",
+        views.project_detail,
+        name="project_detail",
+    ),
+
+    path(
+        "workspaces/<int:workspace_pk>/projects/<int:pk>/edit/",
+        views.project_update,
+        name="project_update",
+    ),
+
+    path(
+        "workspaces/<int:workspace_pk>/projects/<int:pk>/delete/",
+        views.project_delete,
+        name="project_delete",
+    ),
 ]
