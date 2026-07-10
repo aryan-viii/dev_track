@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}
+Tasks - {{ project.name }}
+{% endblock %}
+
+{% block content %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{% url 'workspace_detail' workspace.pk %}">{{ workspace.name }}</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'project_list' workspace.pk %}">Projects</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'project_detail' workspace.pk project.pk %}">{{ project.name }}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Tasks
+        </li>
+    </ol>
+</nav>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h1 class="mb-0">Tasks</h1>
+
+    <a
+        href="{% url 'task_create' workspace.pk project.pk %}"
+        class="btn btn-primary"
+    >
+        <i class="bi bi-plus-circle"></i>
+        New Task
+    </a>
+
+</div>
+
+<form method="GET" class="row g-2 mb-4">
+
+    <div class="col-md-5">
+        <input
+            type="text"
+            name="q"
+            class="form-control"
+            placeholder="Search tasks by title..."
+            value="{{ search_query }}"
+        >
+    </div>
+
+    <div class="col-md-3">
+        <select name="status" class="form-select">
+            <option value="">All Statuses</option>
+            {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <select name="priority" class="form-select">
+            <option value="">All Priorities</option>
+            {% for value, label in priority_choices %}
+                <option value="{{ value }}" {% if priority_filter == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-1">
+        <button type="submit" class="btn btn-outline-primary w-100">
+            <i class="bi bi-search"></i>
+        </button>
+    </div>
+
+</form>
+
+{% if tasks %}
+
+<div class="table-responsive">
+
+    <table class="table table-hover align-middle">
+
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Assigned To</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Due Date</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for task in tasks %}
+
+            <tr>
+
+                <td>
+                    <a href="{% url 'task_detail' workspace.pk project.pk task.pk %}">
+                        {{ task.title }}
+                    </a>
+                </td>
+
+                <td>
+                    {{ task.assigned_to.username|default:"Unassigned" }}
+                </td>
+
+                <td>
+                    {% if task.status == "todo" %}
+                        <span class="badge bg-secondary">To Do</span>
+                    {% elif task.status == "in_progress" %}
+                        <span class="badge bg-primary">In Progress</span>
+                    {% elif task.status == "done" %}
+                        <span class="badge bg-success">Done</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if task.priority == "low" %}
+                        <span class="badge bg-info text-dark">Low</span>
+                    {% elif task.priority == "medium" %}
+                        <span class="badge bg-warning text-dark">Medium</span>
+                    {% elif task.priority == "high" %}
+                        <span class="badge bg-danger">High</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {{ task.due_date|default:"—" }}
+                </td>
+
+                <td class="text-end">
+                    <a
+                        href="{% url 'task_detail' workspace.pk project.pk task.pk %}"
+                        class="btn btn-sm btn-outline-primary"
+                    >
+                        <i class="bi bi-eye"></i>
+                    </a>
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% if page_obj.paginator.num_pages > 1 %}
+
+<nav aria-label="Task pagination" class="mt-4">
+
+    <ul class="pagination justify-content-center">
+
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if priority_filter %}&priority={{ priority_filter }}{% endif %}">
+                Previous
+            </a>
+        </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+            <a class="page-link" href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if priority_filter %}&priority={{ priority_filter }}{% endif %}">
+                {{ num }}
+            </a>
+        </li>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if priority_filter %}&priority={{ priority_filter }}{% endif %}">
+                Next
+            </a>
+        </li>
+        {% endif %}
+
+    </ul>
+
+</nav>
+
+{% endif %}
+
+{% else %}
+
+<div class="alert alert-info">
+    {% if search_query or status_filter or priority_filter %}
+        No tasks found matching your filters.
+    {% else %}
+        No tasks found.
+        <a href="{% url 'task_create' workspace.pk project.pk %}">Create the first one</a>.
+    {% endif %}
+</div>
+
+{% endif %}
+
+{% endblock %}

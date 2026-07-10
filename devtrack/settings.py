@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'dashboard',
     'projects',
     'tasks',
+    'comments',
     'core',
 ]
 

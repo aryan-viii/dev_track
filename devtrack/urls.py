@@ -9,6 +9,9 @@ urlpatterns = [
     path("", include("core.urls")),
     path("accounts/", include("accounts.urls")),
     path("", include("projects.urls")),
+    path("", include("tasks.urls")),
+    path("", include("comments.urls")),
+    path("", include("dashboard.urls")),
 ]
 
 # Serve media files during development

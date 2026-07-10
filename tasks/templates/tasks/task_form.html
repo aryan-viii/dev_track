@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if task %}
+        Edit Task
+    {% else %}
+        Create Task
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow">
+
+            <div class="card-header">
+
+                <h3 class="mb-0">
+                    <i class="bi bi-check2-square"></i>
+                    {% if task %}
+                        Edit Task
+                    {% else %}
+                        Create Task
+                    {% endif %}
+                </h3>
+
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            {{ form.title.label }}
+                        </label>
+
+                        {{ form.title }}
+
+                        <div class="text-danger">
+                            {{ form.title.errors }}
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            {{ form.description.label }}
+                        </label>
+
+                        {{ form.description }}
+
+                        <div class="text-danger">
+                            {{ form.description.errors }}
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            {{ form.assigned_to.label }}
+                        </label>
+
+                        {{ form.assigned_to }}
+
+                        <div class="text-danger">
+                            {{ form.assigned_to.errors }}
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                {{ form.status.label }}
+                            </label>
+
+                            {{ form.status }}
+
+                            <div class="text-danger">
+                                {{ form.status.errors }}
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                {{ form.priority.label }}
+                            </label>
+
+                            {{ form.priority }}
+
+                            <div class="text-danger">
+                                {{ form.priority.errors }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            {{ form.due_date.label }}
+                        </label>
+
+                        {{ form.due_date }}
+
+                        <div class="text-danger">
+                            {{ form.due_date.errors }}
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        <i class="bi bi-check-circle"></i>
+                        {% if task %}
+                            Update Task
+                        {% else %}
+                            Create Task
+                        {% endif %}
+                    </button>
+
+                    <a
+                        href="{% url 'task_list' workspace.pk project.pk %}"
+                        class="btn btn-secondary"
+                    >
+                        Cancel
+                    </a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
