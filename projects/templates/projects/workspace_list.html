@@ -1,49 +1,163 @@
 {% extends "base.html" %}
 
 {% block title %}
-Workspaces
+My Workspaces
 {% endblock %}
 
 {% block content %}
 
-<p>
-    <a href="{% url 'workspace_create' %}">
-        Create Workspace
-    </a>
-</p>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-<h1>My Workspaces</h1>
+    <h1 class="mb-0">My Workspaces</h1>
+
+    
+        href="{% url 'workspace_create' %}"
+        class="btn btn-primary"
+    >
+        <i class="bi bi-plus-circle"></i>
+        New Workspace
+    </a>
+
+</div>
+
+<form method="GET" class="row g-2 mb-4">
+
+    <div class="col-md-10">
+        <input
+            type="text"
+            name="q"
+            class="form-control"
+            placeholder="Search workspaces by name..."
+            value="{{ search_query }}"
+        >
+    </div>
+
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-outline-primary w-100">
+            <i class="bi bi-search"></i>
+            Search
+        </button>
+    </div>
+
+</form>
 
 {% if workspaces %}
 
-<ul>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
     {% for workspace in workspaces %}
 
-    <li>
+    <div class="col">
 
-        <h3>
-            <a href="{% url 'workspace_detail' workspace.pk %}">
-                {{ workspace.name }}
-            </a>
-        </h3>
+        <div class="card h-100 shadow-sm">
 
-        <p>{{ workspace.description }}</p>
+            <div class="card-body">
 
-        <small>
-            Owner:
-            {{ workspace.owner.username }}
-        </small>
+                <div class="d-flex align-items-center mb-2">
 
-    </li>
+                    {% if workspace.logo %}
+                        <img
+                            src="{{ workspace.logo.url }}"
+                            alt="{{ workspace.name }}"
+                            class="rounded me-2"
+                            style="width: 40px; height: 40px; object-fit: cover;"
+                        >
+                    {% else %}
+                        <i class="bi bi-folder2-open fs-3 text-primary me-2"></i>
+                    {% endif %}
+
+                    <h5 class="card-title mb-0">
+                        {{ workspace.name }}
+                    </h5>
+
+                </div>
+
+                <p class="card-text text-muted">
+                    {{ workspace.description|default:"No description provided."|truncatewords:20 }}
+                </p>
+
+                <p class="card-text">
+                    <small class="text-muted">
+                        <i class="bi bi-person"></i>
+                        Owner: {{ workspace.owner.username }}
+                    </small>
+                </p>
+
+                <p class="card-text">
+                    <small class="text-muted">
+                        <i class="bi bi-people"></i>
+                        {{ workspace.members.count }} member{{ workspace.members.count|pluralize }}
+                    </small>
+                </p>
+
+            </div>
+
+            <div class="card-footer bg-transparent">
+
+                
+                    href="{% url 'workspace_detail' workspace.pk %}"
+                    class="btn btn-sm btn-outline-primary"
+                >
+                    <i class="bi bi-eye"></i>
+                    View
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
 
     {% endfor %}
 
-</ul>
+</div>
+
+{% if page_obj.paginator.num_pages > 1 %}
+
+<nav aria-label="Workspace pagination" class="mt-4">
+
+    <ul class="pagination justify-content-center">
+
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">
+                Previous
+            </a>
+        </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+            <a class="page-link" href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}">
+                {{ num }}
+            </a>
+        </li>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">
+                Next
+            </a>
+        </li>
+        {% endif %}
+
+    </ul>
+
+</nav>
+
+{% endif %}
 
 {% else %}
 
-<p>You don't belong to any workspace yet.</p>
+<div class="alert alert-info">
+    {% if search_query %}
+        No workspaces found matching "{{ search_query }}".
+    {% else %}
+        You don't belong to any workspace yet.
+        <a href="{% url 'workspace_create' %}">Create your first one</a>.
+    {% endif %}
+</div>
 
 {% endif %}
 

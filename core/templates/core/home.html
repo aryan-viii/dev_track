@@ -1,8 +1,71 @@
 {% extends "base.html" %}
 
-{% block title %}Home Page{% endblock title %}
+{% block title %}DevTrack — Project & Task Management{% endblock title %}
 
 {% block content %}
-    <h1>Home Page</h1>
-    <p>This is a Home Page</p>
+
+<div class="px-4 py-5 text-center">
+
+    <h1 class="display-5 fw-bold">Track your projects, together.</h1>
+
+    <p class="col-lg-8 mx-auto lead text-muted">
+        DevTrack is a lightweight project and task management tool.
+        Organize your work into workspaces, break projects into tasks,
+        assign teammates, and discuss progress — all in one place.
+    </p>
+
+    <div class="d-flex justify-content-center gap-2 mb-5">
+        <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-4">
+            Get Started
+        </a>
+        <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg px-4">
+            Log In
+        </a>
+    </div>
+
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+
+    <div class="col">
+        <div class="card h-100 shadow-sm text-center">
+            <div class="card-body">
+                <i class="bi bi-folder2-open fs-1 text-primary"></i>
+                <h5 class="card-title mt-3">Workspaces</h5>
+                <p class="card-text text-muted">
+                    Group related projects together and invite teammates
+                    to collaborate.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card h-100 shadow-sm text-center">
+            <div class="card-body">
+                <i class="bi bi-list-task fs-1 text-success"></i>
+                <h5 class="card-title mt-3">Tasks</h5>
+                <p class="card-text text-muted">
+                    Break projects into tasks with status, priority, due
+                    dates, and assignees.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card h-100 shadow-sm text-center">
+            <div class="card-body">
+                <i class="bi bi-speedometer2 fs-1 text-warning"></i>
+                <h5 class="card-title mt-3">Dashboard</h5>
+                <p class="card-text text-muted">
+                    See what's due, what's in progress, and what's
+                    assigned to you at a glance.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 {% endblock content %}

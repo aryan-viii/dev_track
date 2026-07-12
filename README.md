@@ -88,10 +88,22 @@ URLs are nested to reflect the data hierarchy, e.g.:
 python -m venv venv
 source venv/bin/activate        # or venv\Scripts\activate on Windows
 pip install -r requirements.txt
+cp .env.example .env            # then edit .env with your own SECRET_KEY
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
 ```
+
+## Running Tests
+
+```bash
+python manage.py test
+```
+
+Covers model behavior (e.g. `on_delete=SET_NULL` for task assignment),
+permission boundaries (non-members get 403, non-owners can't
+edit/delete, only a comment's author can edit/delete it), and
+task search/filtering.
 
 ## Talking Points for Interviews
 
